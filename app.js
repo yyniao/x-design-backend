@@ -5,6 +5,9 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
+const jwt = require('koa-jwt');
+
+const secret = require('./config/secret');
 
 const index = require('./routes/index')
 
@@ -30,6 +33,15 @@ app.use(async (ctx, next) => {
   const ms = new Date() - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
+
+//jwt
+app.use(jwt({ secret:secret }).unless({
+    // 设置login、register接口，可以不需要认证访问
+    path: [
+        /\/api\/user\/login/, /\/api\/user\/register/,/\/api\/user\/sendMessage/,,/\/api\/user\/resetPassword/, /\/api\/interaction/, /\/api\/receiveIDToken/, /\/api\/authenticate/,
+        /^((?!\/api).)*$/   // 设置除了私有接口外的其它资源，可以不需要认证访问
+    ]
+}));
 
 // routes
 app.use(index.routes(), index.allowedMethods())

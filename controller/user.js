@@ -2,6 +2,7 @@ const userService = require('../service/user');
 const jwt = require('jsonwebtoken');
 // const aliClient = require('../util/aliClient');
 const tokenProcessor = require('../util/tokenProcessor');
+const Response = require('../util/response');
 
 class UserController {
     /**
@@ -10,6 +11,7 @@ class UserController {
      * @returns {Promise.<void>}
      */
     static async login(ctx) {
+        console.log('login');
         const data = ctx.request.body;
         let result = await userService.loginByWX(data.code, data.userInfo);
         ctx.body = Response.failed('test');

@@ -1,20 +1,27 @@
 const querystring = require('querystring');
-const http = require('http');
+const https = require('https');
 
-const request = {
-    get: function(url, config={}){
+const httpsRequest = {
+    get: function(url, config){
+        const options = config || {
+            method: 'GET',
+            timeout: 3000
+        };
+
         return new Promise((resolve, reject) => {
-            http.get(url, config, (res) => {
+            https.get(url, options, (res) => {
                 const {statusCode} = res;
                 const contentType = res.headers['content-type'];
+                console.log(contentType);
                 let err;
                 let rawData = "";
 
                 if (statusCode !== 200) {
                     err = new Error("服务器响应失败");
-                } else if (!/application\/json/.test(contentType)){
-                    err = new Error("数据格式错误，需要json格式");
                 }
+                // else if (!/application\/json/.test(contentType)){
+                //     err = new Error("数据格式错误，需要json格式");
+                // }
                 if (err) {
                     console.log(err);
                     //释放内存
@@ -31,7 +38,7 @@ const request = {
                 res.on("end", () => {
                     try {
                         const parsedData = JSON.parse(rawData);
-                        console.log(parsedData);
+                        resolve(parsedData);
                     } catch (e) {
                         reject(e);
                     }
@@ -48,6 +55,7 @@ const request = {
 
         const options = config || {
             method: 'POST',
+            timeout: 3000,
             headers: {
                 'Content-Type': 'application/json',
                 'Content-Length': Buffer.byteLength(postData)
@@ -55,7 +63,7 @@ const request = {
         };
 
         return new Promise((resolve, reject) => {
-            const req = http.request(url, options, (res) => {
+            const req = https.request(url, options, (res) => {
                 console.log(`状态码: ${res.statusCode}`);
                 console.log(`响应头: ${JSON.stringify(res.headers)}`);
                 res.setEncoding('utf8');
@@ -80,6 +88,6 @@ const request = {
 
 
 
-}
+};
 
-export default http;
+module.exports = httpsRequest;

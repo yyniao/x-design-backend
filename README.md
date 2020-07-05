@@ -14,5 +14,6 @@ service，业务逻辑目录；
 routes，路由配置目录；
 app.js，启动文件；
 
-请勿随意修改bin、config和app.js
+请勿随意修改bin、config和app.js;
+secret.json请于群文件下载后放置在config文件夹下;
 

@@ -7,8 +7,8 @@ function WXBizDataCrypt(appId, sessionKey) {
 
 WXBizDataCrypt.prototype.decryptData = function (encryptedData, iv) {
   // base64 decode
-  let sessionKey = new Buffer(this.sessionKey, 'base64');
-  encryptedData = new Buffer(encryptedData, 'base64');
+  let sessionKey = Buffer.from(this.sessionKey, 'base64');
+  encryptedData = Buffer.from(encryptedData, 'base64');
   iv = new Buffer(iv, 'base64');
 
   let decoded;

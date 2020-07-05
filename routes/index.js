@@ -1,19 +1,12 @@
-const router = require('koa-router')()
+const path = require('path');
+const Router = require('koa-router');
+const router = new Router({prefix: '/api'});
 
-router.get('/', async (ctx, next) => {
-  await ctx.render('index', {
-    title: 'Hello Koa 2!'
-  })
-})
+const files = ['user'];
 
-router.get('/string', async (ctx, next) => {
-  ctx.body = 'koa2 string'
-})
+files.forEach(file => {
+    const file_entity = require(path.join(__dirname, file));
+    router.use(`/${file}`, file_entity.routes(), file_entity.allowedMethods())
+});
 
-router.get('/json', async (ctx, next) => {
-  ctx.body = {
-    title: 'koa2 json'
-  }
-})
-
-module.exports = router
+module.exports = router;

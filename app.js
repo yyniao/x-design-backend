@@ -35,7 +35,7 @@ app.use(async (ctx, next) => {
 })
 
 //jwt
-app.use(jwt({ secret:secret }).unless({
+app.use(jwt({ secret:secret.sign }).unless({
     // 设置login、register接口，可以不需要认证访问
     path: [
         /\/api\/user\/login/, /\/api\/user\/register/,/\/api\/user\/sendMessage/,,/\/api\/user\/resetPassword/, /\/api\/interaction/, /\/api\/receiveIDToken/, /\/api\/authenticate/,

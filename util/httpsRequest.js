@@ -12,7 +12,6 @@ const httpsRequest = {
             https.get(url, options, (res) => {
                 const {statusCode} = res;
                 const contentType = res.headers['content-type'];
-                console.log(contentType);
                 let err;
                 let rawData = "";
 

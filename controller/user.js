@@ -11,9 +11,16 @@ class UserController {
      * @returns {Promise.<void>}
      */
     static async login(ctx) {
-        console.log('login');
         const data = ctx.request.body;
-        let result = await userService.loginByWX(data.code, data.userInfo);
+        let result = Response.failed('登陆失败');
+        if(data.origin === "微信"){
+            result = await userService.loginByMiniProgram(data.code, data.userInfo, 'wx');
+        }else if(data.origin === 'QQ') {
+            result = await userService.loginByMiniProgram(data.code, data.userInfo, 'qq');
+        }else{
+            result = Response.failed('非法登录');
+        }
+
         ctx.body = Response.failed('test');
     }
     //

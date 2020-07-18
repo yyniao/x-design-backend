@@ -49,19 +49,11 @@ module.exports = (sequelize, DataTypes) =>
             allowNull: false,
             defaultValue: ""
         },
-        wxOpenid: {
+        wxUnionId: {
             type: DataTypes.STRING(64),
             allowNull: true
         },
-        qqOpenid: {
-            type: DataTypes.STRING(64),
-            allowNull: true
-        },
-        wxUnionid: {
-            type: DataTypes.STRING(64),
-            allowNull: true
-        },
-        qqUnionid: {
+        qqUnionId: {
             type: DataTypes.STRING(64),
             allowNull: true
         },

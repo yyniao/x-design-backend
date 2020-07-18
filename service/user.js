@@ -29,7 +29,7 @@ class UserService{
 
         console.log(url);
 
-        Request.get(url).then(res => {
+        await Request.get(url).then(async res => {
             const sessionKey = res.session_key;
             if(sessionKey){
                 let pc = new WXBizDataCrypt(secret[`${origin}-appid`], sessionKey);
@@ -38,19 +38,25 @@ class UserService{
                 if(!data.watermark || data.watermark.appid !== secret[`${origin}-appid`]){
                     return Response.failed('请求非法');
                 }
+                // 后期请删除
+                if(!data.unionId){
+                    data.unionId = 'mock001';
+                }
+
                 let user;
                 if(origin === 'wx'){
-                    user = userModel.findByWXOpenId(data.openid);
+                    user = await userModel.findByWXUnionId(data.unionId);
                 }else if(origin === 'qq'){
-                    user = userModel.findByQQOpenId(data.openid);
+                    user = await userModel.findByQQUnionId(data.unionId);
                 }
                 if(user && !user.isValid){
                     return Response.failed('账号封禁中');
                 }
+
                 if(!user){
-                    userModel.create()
+                    user = await userModel.create(data);
                 }
-                return Response.success({token: jwt.sign(data.openId, secret.sign), nickName: data.nickName, avatarUrl: data.avatarUrl});
+                return Response.success({token: jwt.sign(user.id, secret.sign), nickName: user.nickName, avatarUrl: user.avatarUrl});
 
 
 

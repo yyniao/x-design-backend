@@ -21,7 +21,7 @@ class UserController {
             result = Response.failed('非法登录');
         }
 
-        ctx.body = Response.failed('test');
+        ctx.body = result;
     }
     //
     // static async getInfo(ctx) {

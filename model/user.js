@@ -19,50 +19,39 @@ class UserModel {
     }
 
     /**
-     * 按openId查询
-     * @param openId
+     * 按微信的unionId查询
+     * @param unionId
      * @returns {Promise.<*>}
      */
-    static async findByWXOpenId(openId){
+    static async findByWXUnionId(unionId){
         return User.findOne({
-            where: {WXOpenId: openId}
+            where: {wxUnionId: unionId}
         });
     }
 
     /**
-     * 按openId查询
-     * @param openId
+     * 按QQ的unionId查询
+     * @param unionId
      * @returns {Promise.<*>}
      */
-    static async findByQQOpenId(openId){
+    static async findByQQUnionId(unionId){
         return User.findOne({
-            where: {QQOpenId: openId}
+            where: {qqUnionId: unionId}
         });
     }
 
     /**
      * 创建用户
-     * @param name 昵称
-     * @param password 密码
-     * @param phone 手机号码
      * @returns {Promise.<*>}
      */
-    static async create(phone='', nickname, password='', email='', avatarUrl='/static/image/mine/photo.png', gender=0,
-                        country='', province='', city='', wxOpenid, qqOpenId, wxUnionid, qqUnionid){
-        let user = await User.findOne({
-            where: {phone:phone}
+    static async create({phone='', nickName="未命名", password='', email='', avatarUrl='/static/image/mine/photo.png', gender=0,
+                        country='', province='', city='', wxUnionId='', qqUnionId=''}){
+        let user = await User.create({
+            phone: phone, nickname: nickName, password: password, email: email, avatarUrl: avatarUrl, gender: gender,
+            country: country, province: province, city: city, wxUnionId: wxUnionId, qqUnionId: qqUnionId,
+            registerTime: getNowFormatTime()
         });
-        if(user){
-            return {code: -2};
-        }
-        user = await User.findOne({
-            where: {name:name}
-        });
-        if(user){
-            return {code: -1};
-        }
-        user = await User.create({name: name, password: password, phone: phone, email: email, createdTime: getNowFormatTime()});
-        return {code: 0, data: user};
+        return user;
     }
 
     static async findByUid(id){
@@ -71,7 +60,7 @@ class UserModel {
         });
     }
 
-    static async updateName(id, newName){
+    static async updateNickname(id, newName){
         let user = await User.findOne({
             where: {name: newName}
         });
@@ -81,21 +70,6 @@ class UserModel {
 
         await User.update({name: newName}, {where: {id: id}});
         return {code: 0};
-    }
-
-    static async updateEmail(id, newEmail){
-        await User.update({email: newEmail}, {where: {id: id}});
-        return {code: 0};
-    }
-
-    static async updateSignature(id, newSignature){
-        await User.update({signature: newSignature}, {where: {id: id}});
-        return {code: 0};
-    }
-
-    static async identifyTeacher(uid){
-        await User.update({role: 'TEACHER'}, {where: {id: uid}});
-        return true;
     }
 
     static async resetPassword(phone, newPassword){

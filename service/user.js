@@ -29,7 +29,7 @@ class UserService{
 
         console.log(url);
 
-        await Request.get(url).then(async res => {
+        return await Request.get(url).then(async res => {
             const sessionKey = res.session_key;
             if(sessionKey){
                 let pc = new WXBizDataCrypt(secret[`${origin}-appid`], sessionKey);
@@ -54,9 +54,16 @@ class UserService{
                 }
 
                 if(!user){
+                    if(origin === 'wx'){
+                        data.wxUnionId = data.unionId;
+                        data.unionId = undefined;
+                    }else if(origin === 'qq'){
+                        data.qqUnionId = data.unionId;
+                        data.unionId = undefined;
+                    }
                     user = await userModel.create(data);
                 }
-                return Response.success({token: jwt.sign(user.id, secret.sign), nickName: user.nickName, avatarUrl: user.avatarUrl});
+                return Response.success({token: jwt.sign(user.id, secret.sign), nickname: user.nickname, avatarUrl: user.avatarUrl});
 
 
 

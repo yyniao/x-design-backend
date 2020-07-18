@@ -21,6 +21,7 @@ class UserController {
             result = Response.failed('非法登录');
         }
 
+        console.log(result);
         ctx.body = result;
     }
     //

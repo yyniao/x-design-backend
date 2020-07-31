@@ -9,8 +9,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "ali-oss": "^6.10.0",
     "bcrypt": "^5.0.0",
     "crypto": "^1.0.1",
+    "crypto-js": "^4.0.0",
     "debug": "^4.1.1",
     "http": "^0.0.1-security",
     "https": "^1.0.0",

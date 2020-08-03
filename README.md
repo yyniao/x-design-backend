@@ -17,3 +17,9 @@ app.js，启动文件；
 请勿随意修改bin、config和app.js;
 secret.json请于群文件下载后放置在config文件夹下;
 
+开发请安装并配置nodejs、npm、yarn最新版
+使用yarn进行包管理与运行；
+如：
+yarn install 安装依赖
+yarn dev 运行
+

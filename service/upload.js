@@ -8,19 +8,8 @@ const previewHelper = new myUploadOssHelper({
     maxSize: 0.2, // 限制上传文件大小(单位：Mb)。
 });
 
-const pictureHelper = new myUploadOssHelper({
-    accessKeyId: secret.accessKeyID,
-    accessKeySecret: secret.accessKeySecret,
-    timeout: 1, // 限制参数的生效时间(单位：小时)。
-    maxSize: 5, // 限制上传文件大小(单位：Mb)。
-});
-
 class UserService{
-    static async getPictureParam(){
-        return pictureHelper.createUploadParams();
-    }
-
-    static async getPreviewParam(){
+ static async getPreviewParam(){
         return previewHelper.createUploadParams();
     }
 }
